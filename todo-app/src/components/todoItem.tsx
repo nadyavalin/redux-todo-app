@@ -1,18 +1,24 @@
-interface ITodoItem {
+import { useAppDispatch } from "../../src/hooks";
+import { removeTodo, toggleTodoComplete } from "../store/todoSlice";
+
+interface TodoItemProps {
   id: string;
-  text: string;
+  title: string;
   completed: boolean;
-  removeTodo: () => void;
-  toggleTodoComplete: () => void;
 }
 
-export const TodoItem = ({ id, text, completed, removeTodo, toggleTodoComplete }: ITodoItem) => {
+export const TodoItem = ({ id, title, completed }: TodoItemProps) => {
+  const dispatch = useAppDispatch();
   return (
     <li>
       <li key={id}>
-        <input type="checkbox" checked={completed} onChange={() => toggleTodoComplete()} />
-        <span>{text}</span>
-        <span className="delete" onClick={() => removeTodo()}>
+        <input
+          type="checkbox"
+          checked={completed}
+          onChange={() => dispatch(toggleTodoComplete(id))}
+        />
+        <span>{title}</span>
+        <span className="delete" onClick={() => dispatch(removeTodo(id))}>
           &times;
         </span>
       </li>
